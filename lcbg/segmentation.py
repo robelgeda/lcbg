@@ -13,15 +13,14 @@ from astropy.stats import gaussian_fwhm_to_sigma
 from matplotlib import pyplot as plt
 
 
-def plot_segments(segm, image=None, vmin=None, vmax=None):
+def plot_segments(segm, image=None, vmin=None, vmax=None, alpha=0.5):
     """
     Plot segmented areas over an image (if provided)
     """
 
     cmap = segm.make_cmap(random_state=np.random.randint(1000000))
-    alpha = 1
+
     if image is not None:
-        alpha = 0.5
         plt.imshow(image, vmin=vmin, vmax=vmax, cmap="gist_gray")
 
     plt.imshow(segm, cmap=cmap, alpha=alpha)
@@ -69,7 +68,7 @@ def make_kernel(fwhm, kernel_size):
 
 def segm_mask(obj, segm, mask_background=False):
     """
-    Given a segmentaton and a target with an ID, returns a mask
+    Given a segmentation and a target with an ID, returns a mask
     with all other sources masked in the original image.
 
     Parameters

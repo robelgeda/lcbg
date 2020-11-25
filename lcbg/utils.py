@@ -8,6 +8,7 @@ from scipy.interpolate import interp1d
 from astropy.stats import gaussian_sigma_to_fwhm
 from astropy.wcs.utils import proj_plane_pixel_scales
 from astropy import units as u
+from astropy.coordinates import SkyCoord
 
 from matplotlib import pyplot as plt
 
@@ -18,6 +19,13 @@ def natural_sort(l):
     convert = lambda text: int(text) if text.isdigit() else text.lower()
     alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ]
     return sorted(l, key = alphanum_key)
+
+
+def match_catalogs(ra_1, dec_1, ra_2, dec_2, unit='deg'):
+    """Wrapper for `SkyCoord.match_to_catalog_sky`"""
+    cat1_coords = SkyCoord(ra=ra_1, dec=dec_1, unit=unit)
+    cat2_coords = SkyCoord(ra=ra_2, dec=dec_2, unit=unit)
+    return cat1_coords.match_to_catalog_sky(cat2_coords)
 
 
 def angular_to_pixel(angular_diameter, wcs):
@@ -249,5 +257,8 @@ def measure_fwhm(image, plot=True, printout=True):
         plt.show()
 
     return np.array([x_fwhm, y_fwhm])
+
+
+
 
 
